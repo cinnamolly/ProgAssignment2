@@ -54,10 +54,11 @@ public class strassen
 		}
 		int[][] result2 = s.strassenMultiply(matrix_A, matrix_B, dimension);
 
+		System.out.println(result2.length);
 		System.out.println("Strassen");
-		/*for(int x = 0; x < dimension; x++){
+		for(int x = 0; x < dimension; x++){
 			System.out.println(result2[x][x]);
-		}*/
+		}
 		
 	}
 }

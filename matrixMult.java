@@ -38,6 +38,7 @@ public class matrixMult
 		if(dim == 1){
 			int[][] value = new int[1][1];
 			value[0][0] = m_A[0][0]*m_B[0][0];
+			System.out.println("value: " + value[0][0]);
 			return value;
 		}
 		currDim = dim/2;
@@ -52,17 +53,50 @@ public class matrixMult
 		g = splitter(m_B, "g");
 		h = splitter(m_B, "h");
 
-		System.out.println("a");
+		System.out.println("A:");
 		for(int x = 0; x < currDim; x++){
 			for(int y = 0; y < currDim; y++){
 				System.out.println(a[x][y]);
 			}
 		}
 
+		int[][] subtract = subtract(f,h);
+		System.out.println("Subtract:");
+		for(int x = 0; x < currDim; x++){
+			for(int y = 0; y < currDim; y++){
+				System.out.println(subtract[x][y]);
+			}
+		}
+
+
 		//break into sub-problems - recursively use strassen's
 		p1 = strassenMultiply(a, subtract(f, h), currDim);
+		System.out.println("P1");
+		for(int x = 0; x < p1.length; x++){
+			for(int y = 0; y < p1.length; y++){
+				System.out.println(p1[x][y]);
+			}
+		}
 		p2 = strassenMultiply(add(a, b), h, currDim);
+		System.out.println("A:");
+		for(int x = 0; x < currDim; x++){
+			for(int y = 0; y < currDim; y++){
+				System.out.println(a[x][y]);
+			}
+		}
+		System.out.println("P2");
+		for(int x = 0; x < p2.length; x++){
+			for(int y = 0; y < p2.length; y++){
+				System.out.println(p2[x][y]);
+			}
+		}
 		p3 = strassenMultiply(add(c, d), e, currDim);
+		System.out.println("P3");
+		for(int x = 0; x < p3.length; x++){
+			for(int y = 0; y < p3.length; y++){
+				System.out.println(p3[x][y]);
+			}
+		}
 		p4 = strassenMultiply(d, subtract(g,e), currDim);
 		p5 = strassenMultiply(add(a, d), add(e, h), currDim);
 		p6 = strassenMultiply(subtract(b, d), add(g, h), currDim);
@@ -135,32 +169,40 @@ public class matrixMult
 		int colMarker = 0;
 		int[][] currMatrix = outputQuad1;
 		int pieceDim = outputQuad1.length;
+		int totalLength = pieceDim*2;
+		int[][] out = new int[totalLength][totalLength];
 		System.out.println("Piece Dim: " + pieceDim);
 		//problem with piecing matricies together
-		/*for(int x = 0; x < pieceDim*2; x++)
-			{
-				for(int y = 0; y < pieceDim*2; y++){
-					if(x >= pieceDim && y >= pieceDim){
-						currMatrix = outputQuad3;
-						rowMarker = pieceDim;
-						colMarker = pieceDim;
-					}
-					else if (x >= pieceDim){
-						currMatrix = outputQuad2;
-						rowMarker = pieceDim;
-						colMarker = 0;
-					}
-					else if (y >= pieceDim){
-						currMatrix = outputQuad4;
-						colMarker = pieceDim;
-						rowMarker = 0;
-					}
-					output[x][y] = currMatrix[x-colMarker][y-rowMarker];
+		for(int x = 0; x< totalLength; x++){
+			for(int y = 0; y <totalLength; y++){
+				if(x>=pieceDim && y >= pieceDim){
+					currMatrix = outputQuad3;
+					rowMarker = pieceDim;
+					colMarker = pieceDim;
 				}
-			}*/
+				else if(x >= pieceDim){
+					currMatrix = outputQuad4;
+					rowMarker = pieceDim;
+					colMarker = 0;
+				}
+				else if (y >= pieceDim){
+					currMatrix = outputQuad2;
+					rowMarker = 0;
+					colMarker = pieceDim;
+				}
+				out[x][y] = currMatrix[x-rowMarker][y-colMarker];
+			}
+		}
 
+		System.out.println("out");
+		for(int x = 0; x < out.length; x++){
+			for(int y = 0; y < out.length; y++){
+				System.out.println(out[x][y]);
 
-		return outputQuad1;
+			}
+		}
+
+		return out;
 	}
 
 	private int[][] splitter(int[][] matrix, String letter){
@@ -177,12 +219,12 @@ public class matrixMult
 			rowMarker = currDim;
 			colMarker = currDim;
 		}
-
+		System.out.println(letter);
 		for(int x = 0; x < currDim; x++)
 			{
 				for(int y = 0; y < currDim; y++){
 					result[x][y] = matrix[x+colMarker][y+rowMarker];
-					//System.out.println("Splitter " + result[x][y]);
+					System.out.println("Splitter " + result[x][y]);
 				}
 			}
 		return result;
