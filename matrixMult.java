@@ -31,8 +31,35 @@ public class matrixMult
 			currDim = 1;
 		int[][] a, b, c, d, e, f, g, h, p1, p2, p3, p4, p5, p6, p7, outputQuad1, outputQuad2, outputQuad3, outputQuad4 = new int[currDim][currDim];
 		//odd case
-		if(dim%2 != 0){
-			//pad with 0's
+		if(dim%2 != 0 && dim != 1){
+			//determine value to padd
+			int padValue = (int) Math.pow(((int)(Math.log(dim)/Math.log(2))+1), 2);
+			System.out.println("PAD " + padValue);
+			int[][] new_A = new int[padValue][padValue];
+			int[][] new_B = new int[padValue][padValue];
+			for(int x = 0; x < padValue; x++){
+				for(int y = 0; y < padValue; y++){
+					if(x < dim && y < dim){
+						new_A[x][y] = m_A[x][y];
+						new_B[x][y] = m_B[x][y];
+					}
+					else{
+						new_A[x][y] = 0;
+						new_B[x][y] = 0;
+					}
+				}
+			}
+			m_A = new_A;
+			m_B = new_B;
+			currDim = padValue/2;
+		}
+
+
+		System.out.println("Matrix A");
+		for(int x = 0; x < m_A.length; x++){
+			for(int y = 0; y < m_A.length; y++){
+				System.out.println(m_A[x][y]);
+			}
 		}
 
 		//base case
@@ -42,7 +69,7 @@ public class matrixMult
 			System.out.println("value: " + value[0][0]);
 			return value;
 		}
-		
+
 		//split into sub-arrays
 		a = splitter(m_A, "a", currDim);
 		b = splitter(m_A, "b", currDim);

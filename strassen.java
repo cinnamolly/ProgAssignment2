@@ -58,7 +58,7 @@ public class strassen
 		System.out.println("Strassen");
 		for(int x = 0; x < dimension; x++){
 			System.out.println(result2[x][x]);
-		}
+				}
 		
 	}
 }
