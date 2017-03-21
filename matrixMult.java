@@ -34,7 +34,7 @@ public class matrixMult
 		if(dim%2 != 0 && dim != 1){
 			//determine value to padd
 			int padValue = (int) Math.pow(((int)(Math.log(dim)/Math.log(2))+1), 2);
-			System.out.println("PAD " + padValue);
+			//System.out.println("PAD " + padValue);
 			int[][] new_A = new int[padValue][padValue];
 			int[][] new_B = new int[padValue][padValue];
 			for(int x = 0; x < padValue; x++){
@@ -55,12 +55,12 @@ public class matrixMult
 		}
 
 
-		System.out.println("Matrix A");
+		/*System.out.println("Matrix A");
 		for(int x = 0; x < m_A.length; x++){
 			for(int y = 0; y < m_A.length; y++){
 				System.out.println(m_A[x][y]);
 			}
-		}
+		}*/
 
 		//base case
 		if(dim == 1){
@@ -203,12 +203,12 @@ public class matrixMult
 			rowMarker = currDim;
 			colMarker = currDim;
 		}
-		System.out.println(letter);
+		//System.out.println(letter);
 		for(int x = 0; x < currDim; x++)
 			{
 				for(int y = 0; y < currDim; y++){
 					result[x][y] = matrix[x+colMarker][y+rowMarker];
-					System.out.println("Splitter " + result[x][y]);
+					//System.out.println("Splitter " + result[x][y]);
 				}
 			}
 		return result;
