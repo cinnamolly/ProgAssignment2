@@ -4,41 +4,50 @@ import java.lang.*;
 public class matrixMult
 {
 	private int dimension;
-	int[][] output;
 	//int currDim; 
 	public matrixMult(int dimension){
 		this.dimension = dimension;
-		output = new int[dimension][dimension];
 	}
 
-	public int[][] standardMultiply(int[][] matrix_A, int[][] matrix_B)
+	public int[][] standardMultiply(int[][] matrix_A, int[][] matrix_B, int dim)
 	{
-		for (int x = 0; x < dimension; x++){
-			for(int y = 0; y < dimension; y++){
-				output[x][y] = 0;
-				for(int z = 0; z < dimension; z++){
+		int [][] output = new int[dim][dim];
+		//System.out.println("DIM: " + dim);
+		/*System.out.println("STANDARD A ");
+			for(int x = 0; x < matrix_A.length; x++){
+				for(int y = 0; y < matrix_A.length; y++){
+					System.out.println(matrix_A[x][y]);
+				}
+			}*/
+		for (int x = 0; x < dim; x++){
+			for(int y = 0; y < dim; y++){
+				for(int z = 0; z < dim; z++){
 					output[x][y] += matrix_A[x][z]*matrix_B[z][y];
 				}
 			}
 		}
+		/*System.out.println("output length " + output.length);
+		for(int x = 0; x < output.length; x++){
+				for(int y = 0; y < output.length; y++){
+					System.out.println(output[x][y]);
+				}
+			}*/
 		return output;
 	}
 
 	public int[][] strassenMultiply(int[][] m_A, int[][] m_B, int dim)
 	{
-		int currDim = dim/2;
-		if(currDim == 0)
-			currDim = 1;
-		int[][] a, b, c, d, e, f, g, h, p1, p2, p3, p4, p5, p6, p7, outputQuad1, outputQuad2, outputQuad3, outputQuad4 = new int[currDim][currDim];
+		//int currDim = dim/2;
 		//odd case
-		if(dim%2 != 0 && dim != 1){
-			//determine value to padd
-			int padValue = (int) Math.pow(((int)(Math.log(dim)/Math.log(2))+1), 2);
+		int currDim = -1;
+		if(dim%2 != 0 && dim != 1 && dim != 2){
+			//determine value to pad
+			//int padValue = (int) Math.pow(((int)(Math.log(dim)/Math.log(2))+1), 2);
 			//System.out.println("PAD " + padValue);
-			int[][] new_A = new int[padValue][padValue];
-			int[][] new_B = new int[padValue][padValue];
-			for(int x = 0; x < padValue; x++){
-				for(int y = 0; y < padValue; y++){
+			int[][] new_A = new int[dim+1][dim+1];
+			int[][] new_B = new int[dim+1][dim+1];
+			for(int x = 0; x < dim+1; x++){
+				for(int y = 0; y < dim+1; y++){
 					if(x < dim && y < dim){
 						new_A[x][y] = m_A[x][y];
 						new_B[x][y] = m_B[x][y];
@@ -51,9 +60,32 @@ public class matrixMult
 			}
 			m_A = new_A;
 			m_B = new_B;
-			currDim = padValue/2;
+			currDim = (dim+1)/2;
+			//ßsSystem.out.println("ODD CURR DIM: " + currDim);
+			System.out.println("New Matrix A");
+			for(int x = 0; x < m_A.length; x++){
+				for(int y = 0; y < m_A.length; y++){
+					System.out.println(m_A[x][y]);
+				}
+			}
+			System.out.println("New Matrix B");
+			for(int x = 0; x < m_B.length; x++){
+				for(int y = 0; y < m_B.length; y++){
+					System.out.println(m_B[x][y]);
+				}
+			}
 		}
-
+		else if (dim !=1 && dim != 2){
+			currDim = dim/2;
+		}
+		else if (dim <= 2)
+		{
+			int[][] value = standardMultiply(m_A, m_B, dim);
+			//System.out.println("value: " + value[0][0]);
+			return value;
+		}
+		int[][] a, b, c, d, e, f, g, h, p1, p1_reg, p2, p2_reg, p3_reg, p4_reg, p5_reg, p6_reg, p7_reg, p3, p4, p5, p6, p7, outputQuad1, outputQuad2, outputQuad3, outputQuad4 = new int[currDim][currDim];
+		System.out.println("CURRENT DIMENSION: " + currDim);
 
 		/*System.out.println("Matrix A");
 		for(int x = 0; x < m_A.length; x++){
@@ -63,12 +95,7 @@ public class matrixMult
 		}*/
 
 		//base case
-		if(dim == 1){
-			int[][] value = new int[1][1];
-			value[0][0] = m_A[0][0]*m_B[0][0];
-			System.out.println("value: " + value[0][0]);
-			return value;
-		}
+
 
 		//split into sub-arrays
 		a = splitter(m_A, "a", currDim);
@@ -80,6 +107,55 @@ public class matrixMult
 		g = splitter(m_B, "g", currDim);
 		h = splitter(m_B, "h", currDim);
 
+		/*System.out.println("a");
+		for(int x = 0; x < a.length; x++){
+			for(int y = 0; y < a.length; y++){
+				System.out.println(a[x][y]);
+			}
+		}
+		System.out.println("b");
+		for(int x = 0; x < b.length; x++){
+			for(int y = 0; y < b.length; y++){
+				System.out.println(b[x][y]);
+			}
+		}
+		System.out.println("c");
+		for(int x = 0; x < c.length; x++){
+			for(int y = 0; y < c.length; y++){
+				System.out.println(c[x][y]);
+			}
+		}
+		System.out.println("d");
+		for(int x = 0; x < d.length; x++){
+			for(int y = 0; y < d.length; y++){
+				System.out.println(d[x][y]);
+			}
+		}
+		System.out.println("e");
+		for(int x = 0; x < e.length; x++){
+			for(int y = 0; y < e.length; y++){
+				System.out.println(e[x][y]);
+			}
+		}
+		System.out.println("f");
+		for(int x = 0; x < f.length; x++){
+			for(int y = 0; y < f.length; y++){
+				System.out.println(f[x][y]);
+			}
+		}
+		System.out.println("g");
+		for(int x = 0; x < g.length; x++){
+			for(int y = 0; y < g.length; y++){
+				System.out.println(g[x][y]);
+			}
+		}
+		System.out.println("h");
+		for(int x = 0; x < h.length; x++){
+			for(int y = 0; y < h.length; y++){
+				System.out.println(h[x][y]);
+			}
+		}*/
+
 		//break into sub-problems - recursively use strassen's
 		p1 = strassenMultiply(a, subtract(f, h), currDim);
 		p2 = strassenMultiply(add(a, b), h, currDim);
@@ -88,6 +164,14 @@ public class matrixMult
 		p5 = strassenMultiply(add(a, d), add(e, h), currDim);
 		p6 = strassenMultiply(subtract(b, d), add(g, h), currDim);
 		p7 = strassenMultiply(subtract(a, c), add(e, f), currDim);
+
+		/*p1 = standardMultiply(a, subtract(f, h), currDim);
+		p2 = standardMultiply(add(a, b), h, currDim);
+		p3 = standardMultiply(add(c, d), e, currDim);
+		p4 = standardMultiply(d, subtract(g,e), currDim);
+		p5 = standardMultiply(add(a, d), add(e, h), currDim);
+		p6 = standardMultiply(subtract(b, d), add(g, h), currDim);
+		p7 = standardMultiply(subtract(a, c), add(e, f), currDim);*/
 
 		//debugging
 		/*System.out.println("P5");
@@ -190,6 +274,7 @@ public class matrixMult
 	}
 
 	private int[][] splitter(int[][] matrix, String letter, int currDim){
+		//System.out.println("SPLITTER CURR DIM: " + currDim);
 		int[][] result = new int[currDim][currDim];
 		int rowMarker = 0;
 		int colMarker = 0;

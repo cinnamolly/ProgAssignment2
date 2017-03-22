@@ -44,7 +44,7 @@ public class strassen
 		
 		//checking standard multiplication
 		matrixMult s = new matrixMult(dimension);
-		int[][] result = s.standardMultiply(matrix_A, matrix_B);
+		int[][] result = s.standardMultiply(matrix_A, matrix_B, dimension);
 
 		System.out.println("Multiplied");
 		for(int x = 0; x < dimension; x++){
@@ -54,11 +54,13 @@ public class strassen
 		}
 		int[][] result2 = s.strassenMultiply(matrix_A, matrix_B, dimension);
 
-		System.out.println(result2.length);
+		//System.out.println(result2.length);
 		System.out.println("Strassen");
 		for(int x = 0; x < dimension; x++){
-			System.out.println(result2[x][x]);
-				}
+			for(int y = 0; y < dimension; y++){
+				System.out.println(result2[x][y]);
+			}
+			}
 		
 	}
 }
