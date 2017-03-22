@@ -3,10 +3,11 @@ import java.lang.*;
 
 public class matrixMult
 {
-	private int dimension;
+	private int dimension, crossover;
 	//int currDim; 
-	public matrixMult(int dimension){
+	public matrixMult(int dimension, int crossover){
 		this.dimension = dimension;
+		this.crossover = crossover;
 	}
 
 	public int[][] standardMultiply(int[][] matrix_A, int[][] matrix_B, int dim)
@@ -40,7 +41,13 @@ public class matrixMult
 		//int currDim = dim/2;
 		//odd case
 		int currDim = -1;
-		if(dim%2 != 0 && dim != 1 && dim != 2){
+		if (dim <= crossover)
+		{
+			int[][] value = standardMultiply(m_A, m_B, dim);
+			//System.out.println("value: " + value[0][0]);
+			return value;
+		}
+		else if(dim%2 != 0 && dim != 1 && dim != 2){
 			//determine value to pad
 			//int padValue = (int) Math.pow(((int)(Math.log(dim)/Math.log(2))+1), 2);
 			//System.out.println("PAD " + padValue);
@@ -62,7 +69,7 @@ public class matrixMult
 			m_B = new_B;
 			currDim = (dim+1)/2;
 			//ßsSystem.out.println("ODD CURR DIM: " + currDim);
-			System.out.println("New Matrix A");
+			/*System.out.println("New Matrix A");
 			for(int x = 0; x < m_A.length; x++){
 				for(int y = 0; y < m_A.length; y++){
 					System.out.println(m_A[x][y]);
@@ -73,19 +80,14 @@ public class matrixMult
 				for(int y = 0; y < m_B.length; y++){
 					System.out.println(m_B[x][y]);
 				}
-			}
+			}*/
 		}
 		else if (dim !=1 && dim != 2){
 			currDim = dim/2;
 		}
-		else if (dim <= 2)
-		{
-			int[][] value = standardMultiply(m_A, m_B, dim);
-			//System.out.println("value: " + value[0][0]);
-			return value;
-		}
+
 		int[][] a, b, c, d, e, f, g, h, p1, p1_reg, p2, p2_reg, p3_reg, p4_reg, p5_reg, p6_reg, p7_reg, p3, p4, p5, p6, p7, outputQuad1, outputQuad2, outputQuad3, outputQuad4 = new int[currDim][currDim];
-		System.out.println("CURRENT DIMENSION: " + currDim);
+		//System.out.println("CURRENT DIMENSION: " + currDim);
 
 		/*System.out.println("Matrix A");
 		for(int x = 0; x < m_A.length; x++){

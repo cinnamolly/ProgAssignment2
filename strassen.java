@@ -29,7 +29,7 @@ public class strassen
 			System.out.println ("File not Found");
 		}
 		//checking contents of arrays
-		System.out.println("Array A");
+		/*System.out.println("Array A");
 		for(int x = 0; x < dimension; x++){
 			for(int y = 0; y < dimension; y++){
 				System.out.println(matrix_A[x][y]);
@@ -40,27 +40,34 @@ public class strassen
 			for(int y = 0; y < dimension; y++){
 				System.out.println(matrix_B[x][y]);
 			}
-		}
-		
+		}*/
+		long startTime = -1;
+		long endTime = -1;
+		long duration = -1;
 		//checking standard multiplication
-		matrixMult s = new matrixMult(dimension);
-		int[][] result = s.standardMultiply(matrix_A, matrix_B, dimension);
-
+		for(int x = 50; x<250; x++){
+			startTime = System.nanoTime();
+			matrixMult s = new matrixMult(dimension, x);
+			int[][] result = s.strassenMultiply(matrix_A, matrix_B, dimension);
+			endTime = System.nanoTime();
+			duration = (endTime - startTime);
+			System.out.print("Crossover: " + x + " Time: " + duration);
+		}
+/*
 		System.out.println("Multiplied");
 		for(int x = 0; x < dimension; x++){
 			for(int y = 0; y < dimension; y++){
 				System.out.println(result[x][y]);
 			}
-		}
-		int[][] result2 = s.strassenMultiply(matrix_A, matrix_B, dimension);
+		}*/
 
 		//System.out.println(result2.length);
-		System.out.println("Strassen");
+		/*System.out.println("Strassen");
 		for(int x = 0; x < dimension; x++){
 			for(int y = 0; y < dimension; y++){
 				System.out.println(result2[x][y]);
 			}
-			}
+			}*/
 		
 	}
 }
