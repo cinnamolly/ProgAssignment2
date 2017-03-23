@@ -12,10 +12,10 @@ public class matrixMult
 	public int[][] standardMultiply(int[][] matrix_A, int[][] matrix_B, int dim)
 	{
 		int [][] output = new int[dim][dim];
-		for (int x = 0; x < dim; x++){
-			for(int y = 0; y < dim; y++){
-				for(int z = 0; z < dim; z++){
-					output[x][y] += matrix_A[x][z]*matrix_B[z][y];
+		for (int i = 0; i < dim; i++){
+			for(int k = 0; k < dim; k++){
+				for(int j = 0; j < dim; j++){
+					output[i][j] += matrix_A[i][k]*matrix_B[k][j];
 				}
 			}
 		}
