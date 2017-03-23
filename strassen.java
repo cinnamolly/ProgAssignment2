@@ -12,13 +12,14 @@ public class strassen
 		boolean isA = true;
 		//load arrays with input
 		File inFile = new File(input);
+		//flags indicate the dimensions (and randomly generated matricies) we used to experimentally find the cross-over point
 		if(flag == 1){
-			//500 by 500
+			//2000x2000
 			Random rand = new Random(System.currentTimeMillis());
 			try{
 				FileWriter fw = new FileWriter("input1.txt");
 				int val = -1;
-				for(int i = 0; i < 500000; i++)
+				for(int i = 0; i < 8000000; i++)
 				{
 					val = rand.nextInt(2);
 					fw.write(val + "\n");
@@ -32,12 +33,12 @@ public class strassen
 			inFile = new File("input1.txt");
 		}
 		else if(flag == 2){
-			//700x700
+			//1500x1500
 			Random rand = new Random(System.currentTimeMillis());
 			try{
 				FileWriter fw = new FileWriter("input2.txt");
 				int val = -1;
-				for(int i = 0; i < 980000; i++)
+				for(int i = 0; i < 4500000; i++)
 				{
 					val = rand.nextInt(2);
 					fw.write(val + "\n");
@@ -51,6 +52,7 @@ public class strassen
 			inFile = new File("input2.txt");
 		}
 		else if(flag == 3){
+			//1000x1000
 			Random rand = new Random(System.currentTimeMillis());
 			try{
 				FileWriter fw = new FileWriter("input3.txt");
@@ -84,49 +86,23 @@ public class strassen
 		} catch(FileNotFoundException e){
 			System.out.println ("File not Found");
 		}
-		//checking contents of arrays
-		/*System.out.println("Array A");
-		for(int x = 0; x < dimension; x++){
-			for(int y = 0; y < dimension; y++){
-				System.out.println(matrix_A[x][y]);
-			}
-		}		
-		System.out.println("Array B");
-		for(int x = 0; x < dimension; x++){
-			for(int y = 0; y < dimension; y++){
-				System.out.println(matrix_B[x][y]);
-			}
-		}*/
+		//code used to find the graphs included in the write-up
+		/*
 		long startTime = -1;
 		long endTime = -1;
 		long duration = -1;
-		//checking standard multiplication
-		for(int x = 20; x<350; x+= 5){
+		for(int x = 20; x<500; x+= 5){
 			startTime = System.nanoTime();
-			matrixMult s = new matrixMult(dimension, x);
-			int[][] result = s.strassenMultiply(matrix_A, matrix_B, dimension);
 			endTime = System.nanoTime();
 			duration = (endTime - startTime);
 			System.out.print(duration + "\n");
-		}
-		/*matrixMult s = new matrixMult(dimension, 2);
-		int[][] result1 = s.standardMultiply(matrix_A, matrix_B, dimension);
-		int[][] result2 = s.strassenMultiply(matrix_A, matrix_B, dimension);
-
-		System.out.println("Multiplied");
+		}*/
+		//set the cross-over point to be the middle of the plateau as mentioned in the write-up
+		matrixMult s = new matrixMult(dimension, 116);
+		int[][] result = s.strassenMultiply(matrix_A, matrix_B, dimension);
 		for(int x = 0; x < dimension; x++){
-			for(int y = 0; y < dimension; y++){
-				System.out.println(result1[x][y]);
-			}
+			System.out.println(result[x][x]);
 		}
-
-		//System.out.println(result2.length);
-		System.out.println("Strassen");
-		for(int x = 0; x < dimension; x++){
-			for(int y = 0; y < dimension; y++){
-				System.out.println(result2[x][y]);
-			}
-			}*/
 		
 	}
 }
